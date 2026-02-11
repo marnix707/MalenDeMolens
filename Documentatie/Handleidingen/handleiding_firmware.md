@@ -1,4 +1,4 @@
-# MultiFlexMeter - Gebruikershandleiding
+# Multiflexmeter - Gebruikershandleiding
 
 
 | Versie | Datum | Auteur | Wijzigingen |
@@ -21,7 +21,7 @@
 
 ## 1. Introductie
 
-De MultiFlexMeter is een open-source IoT sensorplatform ontworpen voor het meten van rotatiesnelheid (RPM) van molens. Het systeem gebruikt LoRaWAN voor draadloze communicatie met The Things Network (TTN).
+De Multiflexmeter is een open-source IoT sensorplatform ontworpen voor het meten van rotatiesnelheid (RPM) van molens. Het systeem gebruikt LoRaWAN voor draadloze communicatie met The Things Network (TTN).
 
 ### Kernfunctionaliteit
 
@@ -50,7 +50,7 @@ De MultiFlexMeter is een open-source IoT sensorplatform ontworpen voor het meten
 
 | Item | Beschrijving |
 |------|--------------|
-| MultiFlexMeter PCB | Hoofdprintplaat met ATmega1284P |
+| Multiflexmeter PCB | Hoofdprintplaat met ATmega1284P |
 | USBasp Programmer | ISP programmer voor firmware upload |
 | FTDI USB-Serial Adapter | Voor debug output (optioneel) |
 | 6-pins ISP Kabel | Verbinding tussen USBasp en MFM |
@@ -672,7 +672,7 @@ Bit 4-0:   Patch versie (0-31)
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗
-║                  MultiFlexMeter Quick Reference            ║
+║                  Multiflexmeter Quick Reference            ║
 ╠═══════════════════════════════════════════════════════════════╣
 ║ BUILD & UPLOAD                                                ║
 ║   pio run                    Build firmware                   ║
