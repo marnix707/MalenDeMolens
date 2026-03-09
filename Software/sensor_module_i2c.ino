@@ -1,12 +1,12 @@
-```/* ================================================================
-   GEMAALROTATIE SENSOR (ATtiny I2C Slave)           -        V1.0
-   AUTHOR:                                          MARNIX HARMSEN
+/* ================================================================
+   GEMAALROTATIE SENSOR (ATtiny I2C Slave)           -        V1.1
+   AUTHOR:                                           MARNIX HARMSEN
    ================================================================ */
 #include <Wire.h>
 
 // Pinout
 #define pinBJT    2
-#define inputIR  3
+#define inputIR   3
 #define pinBlauw 10
 
 #define I2C_ADDRESS 0x36   // Decimaal 54
@@ -15,10 +15,11 @@
 volatile uint32_t gemaalrotatie = 0;
 volatile uint8_t  lastCommand   = 0;
 volatile uint32_t startTime     = 0;
-volatile uint32_t lastPulseTime = 0;
-volatile uint8_t aantalMillisFilter = 500;
+
 volatile uint32_t ledOffTime = 0;
 
+uint32_t lastDetectionTime = 0; 
+const uint8_t debounceDelay = 20; // 20ms debounce filter
 
 boolean isOnderbroken = false;
 
@@ -36,10 +37,17 @@ void setup() {
 }
 
 void loop() {
+  uint32_t currentMillis = millis();
+
   if (digitalRead(inputIR) == LOW) {
     digitalWrite(pinBlauw, LOW);
+    
+    // Debounce timer logica
     if (!isOnderbroken) {
-      gemaalrotatie++;
+      if (currentMillis - lastDetectionTime >= debounceDelay) {
+        gemaalrotatie++;
+        lastDetectionTime = currentMillis; 
+      }
       isOnderbroken = true;
     }
   } else {
@@ -48,9 +56,7 @@ void loop() {
   }
 }
 
-
-
-void receiveEvent() {
+void receiveEvent(int howMany) {
   if (Wire.available()) {
     lastCommand = Wire.read();
     while (Wire.available()) Wire.read();
@@ -59,14 +65,13 @@ void receiveEvent() {
 
 void requestEvent() {
   if (lastCommand == 0x11) {
-
     // Maak lokale kopieën (ISR-veilig)
     uint32_t countCopy = gemaalrotatie;
     uint32_t timeNow   = millis();
     uint32_t deltaTime = timeNow - startTime;
 
     uint8_t buffer[9];
-    buffer[0] = 8; // 8 databijtes volgen
+    buffer[0] = 8; // 8 databytes volgen
 
     // Elapsed time (ms)
     buffer[1] = (deltaTime >> 24) & 0xFF;
@@ -92,4 +97,4 @@ void requestEvent() {
   }
 
   lastCommand = 0;
-}```
+}
